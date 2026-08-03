@@ -40,7 +40,15 @@ export async function POST(request) {
     return NextResponse.json({ error: "Site name is required." }, { status: 400 });
   }
 
-  await saveContent(newContent);
+  try {
+    await saveContent(newContent);
+  } catch (err) {
+    console.error("content save failed:", err);
+    return NextResponse.json(
+      { error: "Could not save content. Check that a Blob store is attached to this Vercel project." },
+      { status: 500 }
+    );
+  }
   return NextResponse.json({ ok: true, content: newContent });
 }
 

@@ -24,7 +24,17 @@ export async function POST(request) {
   }
 
   const buffer = Buffer.from(await file.arrayBuffer());
-  const url = await writeFile(`products/upload.${ext}`, buffer, file.type);
+
+  let url;
+  try {
+    url = await writeFile(`products/upload.${ext}`, buffer, file.type);
+  } catch (err) {
+    console.error("image upload failed:", err);
+    return NextResponse.json(
+      { error: "Could not upload image. Check that a Blob store is attached to this Vercel project." },
+      { status: 500 }
+    );
+  }
 
   return NextResponse.json({ url });
 }

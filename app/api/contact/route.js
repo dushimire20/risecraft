@@ -23,7 +23,12 @@ export async function POST(request) {
     return NextResponse.json({ error: "Please provide a valid email address." }, { status: 400 });
   }
 
-  await addSubmission("contact", { name, email, phone, message });
+  try {
+    await addSubmission("contact", { name, email, phone, message });
+  } catch (err) {
+    console.error("contact submission failed:", err);
+    return NextResponse.json({ error: "Could not save your message right now. Please try again shortly." }, { status: 500 });
+  }
 
   return NextResponse.json({ ok: true });
 }

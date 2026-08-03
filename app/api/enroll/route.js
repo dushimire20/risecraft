@@ -24,7 +24,12 @@ export async function POST(request) {
     return NextResponse.json({ error: "Please provide a valid email address." }, { status: 400 });
   }
 
-  await addSubmission("enrollment", { name, email, phone, course, message });
+  try {
+    await addSubmission("enrollment", { name, email, phone, course, message });
+  } catch (err) {
+    console.error("enrollment submission failed:", err);
+    return NextResponse.json({ error: "Could not save your enrollment right now. Please try again shortly." }, { status: 500 });
+  }
 
   return NextResponse.json({ ok: true });
 }

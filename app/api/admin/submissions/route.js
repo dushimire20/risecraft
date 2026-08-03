@@ -19,12 +19,22 @@ export async function POST(request) {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
 
-  if (action === "markRead") {
-    await markSubmissionRead(type, id);
-  } else if (action === "delete") {
-    await deleteSubmission(type, id);
-  } else {
+  if (action !== "markRead" && action !== "delete") {
     return NextResponse.json({ error: "Unknown action." }, { status: 400 });
+  }
+
+  try {
+    if (action === "markRead") {
+      await markSubmissionRead(type, id);
+    } else {
+      await deleteSubmission(type, id);
+    }
+  } catch (err) {
+    console.error("submission update failed:", err);
+    return NextResponse.json(
+      { error: "Could not update submissions. Check that a Blob store is attached to this Vercel project." },
+      { status: 500 }
+    );
   }
 
   return NextResponse.json({ ok: true });
