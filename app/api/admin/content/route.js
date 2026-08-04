@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { getContent, saveContent } from "@/lib/content";
 import { ALLOWED_ICONS } from "@/lib/icons";
 
@@ -49,6 +50,11 @@ export async function POST(request) {
       { status: 500 }
     );
   }
+
+  // Pages are statically cached; without this, saved edits wouldn't show up
+  // on the live site until the next deploy.
+  revalidatePath("/", "layout");
+
   return NextResponse.json({ ok: true, content: newContent });
 }
 

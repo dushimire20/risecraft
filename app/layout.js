@@ -24,7 +24,7 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata = {
-  title: "FC Risecraft Rwanda Limited - Learn. Create. Earn.",
+  title: "Risecraft Rwanda Limited - Learn. Create. Earn.",
   description:
     "Practical training in fashion & design, branding, business English, corporate training and entrepreneurial skills in Kabuga-Kigali, Rwanda.",
   icon: "/Logo2.png",
